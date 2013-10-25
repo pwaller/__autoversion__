@@ -15,6 +15,11 @@ from pkg_resources import DistributionNotFound, get_distribution, parse_version
 class Git(object):
 
     @classmethod
+    def get_branch(cls, path):
+        return subprocess.check_output("git rev-parse --abbrev-ref HEAD",
+                                       shell=True, cwd=path).strip()
+
+    @classmethod
     def get_version(cls, path, memo={}):
         """
         Return a string describing the version of the repository at ``path`` if
@@ -26,6 +31,12 @@ class Git(object):
             memo[path] = subprocess.check_output(
                 "git describe --tags --dirty 2> /dev/null",
                 shell=True, cwd=path).strip()
+
+            v = re.search("-[0-9]+-", memo[path])
+            if v is not None:
+                # Replace -n- with -branchname-n-
+                branch = r"-{0}-\1-".format(cls.get_branch(path))
+                (memo[path], _) = re.subn("-([0-9]+)-", branch, memo[path], 1)
 
         return memo[path]
 
