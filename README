@@ -1,0 +1,14 @@
+``__autoversion__`` -- What's your number?
+==========================================
+
+Automatically obtain the version number of the importer, retrieving it from
+pkg_resources or source control if necessary.
+
+Example:
+
+	# my fancy module
+	from __autoversion__ import __version__, __version_tuple__
+
+Current support:
+
+- Git
