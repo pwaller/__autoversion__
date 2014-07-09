@@ -128,6 +128,9 @@ def tupleize_version(version):
     "1.0.3-rc-5" -> ((1, 0, 3), ("rc",), (5,))
     """
 
+    if version is None:
+        return (("unknown",),)
+
     if version.startswith("<unknown"):
         return (("unknown",),)
 
