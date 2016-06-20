@@ -91,6 +91,11 @@ def version_from_frame(frame):
 
     module_name = module.__name__
 
+    variable = "AUTOVERSION_{}".format(module_name.upper())
+    override = os.environ.get(variable, None)
+    if override is not None:
+        return override
+
     while True:
         try:
             get_distribution(module_name)
