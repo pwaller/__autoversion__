@@ -4,20 +4,32 @@ or version control if installed with ``pip install --editable` or
 ``setup.py develop``
 """
 
+from __future__ import print_function, unicode_literals
+
+import os
 import re
 import subprocess
+import sys
 
 from inspect import getmodule
 from itertools import groupby
 from pkg_resources import DistributionNotFound, get_distribution, parse_version
 
 
+orig = sys.modules[__name__]
+
+
 class Git(object):
 
     @classmethod
     def get_branch(cls, path):
-        return subprocess.check_output("git rev-parse --abbrev-ref HEAD",
-                                       shell=True, cwd=path).strip()
+        return (
+            subprocess
+            .check_output("git rev-parse --abbrev-ref HEAD",
+                          shell=True, cwd=path)
+            .strip()
+            .decode("utf-8")
+        )
 
     @classmethod
     def get_version(cls, path, memo={}):
@@ -30,7 +42,7 @@ class Git(object):
         if path not in memo:
             memo[path] = subprocess.check_output(
                 "git describe --tags --dirty 2> /dev/null",
-                shell=True, cwd=path).strip()
+                shell=True, cwd=path).strip().decode("utf-8")
 
             v = re.search("-[0-9]+-", memo[path])
             if v is not None:
@@ -143,10 +155,6 @@ def tupleize_version(version):
     grouped = groupby(parsed, is_dash)
 
     return tuple(tuple(group) for dash, group in grouped if not dash)
-
-
-import sys
-orig = sys.modules[__name__]
 
 
 class Module(type(orig)):
