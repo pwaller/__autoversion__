@@ -3,7 +3,7 @@ from distutils.core import setup
 
 conf = dict(
     name='autoversion',
-    version='1.1.1',
+    version='1.2.0',
     description="Obtain installed version of package automatically, even if "
                 "it is installed using editable or develop",
     long_description="\n".join(list(open("README"))[2:]).strip(),
@@ -11,6 +11,8 @@ conf = dict(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.5",
     ],
     keywords='autoversion __autoversion__ __version__ __version__tuple__ version git',
     author='Peter Waller',
