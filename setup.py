@@ -14,6 +14,7 @@ conf = dict(
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.5",
     ],
+    requires=["setuptools"],
     keywords='autoversion __autoversion__ __version__ __version__tuple__ version git',
     author='Peter Waller',
     author_email='p@pwaller.net',
