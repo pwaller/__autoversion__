@@ -61,6 +61,10 @@ class Git(object):
             cls.get_version(path)
             return True
         except subprocess.CalledProcessError:
+            # Git returns non-zero status
+            return False
+        except OSError:
+            # Git unavailable?
             return False
 
 repo_types = [Git]
