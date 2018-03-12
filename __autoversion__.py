@@ -13,7 +13,13 @@ import sys
 
 from inspect import getmodule
 from itertools import groupby
-from pkg_resources import DistributionNotFound, get_distribution, parse_version
+
+try:
+    from pkg_resources import DistributionNotFound, get_distribution, parse_version
+except ImportError:
+    have_setuptools = False
+else:
+    have_setuptools = True
 
 
 orig = sys.modules[__name__]
@@ -173,6 +179,9 @@ class Module(type(orig)):
         """
         Obtain the __version__ of the module of the requestor
         """
+        if not have_setuptools:
+            return "unknown-no-setuptools"
+
         prev_frame = sys._getframe(1)
         return version_from_frame(prev_frame)
 
@@ -182,6 +191,9 @@ class Module(type(orig)):
         Returns a lexicographically comparable tuple representing the version
         of the requestor
         """
+        if not have_setuptools:
+            return ("unknown", "no-setuptools")
+
         prev_frame = sys._getframe(1)
         return tupleize_version(version_from_frame(prev_frame))
 
